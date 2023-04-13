@@ -16,14 +16,14 @@ Python image with Chromium and Chromium Chromedriver to be used with Selenium
 
 ### Python 3 (Alpine-based)
 
-- `3.9-alpine` (based on python:3.9-alpine, [Dockerfile](https://github.com/moisesJurad0/docker-python-chromedriver/blob/master/py-alpine/3.9-alpine/Dockerfile))
+- `3.9-alpine` (based on python:3.9-alpine, [Dockerfile](https://github.com/moisesJurad0/docker-python-chromium/blob/main/py-alpine/3.9-alpine/Dockerfile))
 
 ## Usage
 
 Inherit this image on your own image
 
 ```docker
-FROM squartle:py-chromium
+FROM squartle:python-chromium
 ```
 
 then add this to complete the requirements of your python app. Don't forget include selenium inside the requirements file
