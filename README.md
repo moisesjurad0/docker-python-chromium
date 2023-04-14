@@ -1,6 +1,6 @@
 # docker-python-chromium
 
-Python image with Chromium and Chromium Chromedriver to be used with Selenium
+Python image with Chromium and Chromium Chromedriver to be used with Selenium (Selenium NOT included)
 
 ## Image includes
 
