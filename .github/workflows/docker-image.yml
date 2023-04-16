@@ -9,7 +9,7 @@ on:
 jobs:
 
   build-image:
-    name: builds docker image & push to hubs
+    name: builds docker image & push
     runs-on: ubuntu-latest
 
     steps:
