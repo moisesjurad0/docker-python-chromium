@@ -32,6 +32,7 @@ jobs:
     - uses: docker/build-push-action@v4
       with:
         push: true
+        file: ./py-alpine/3.9-alpine/Dockerfile
         tags: |
           ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:latest
           ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:${{ github.run_number }}
