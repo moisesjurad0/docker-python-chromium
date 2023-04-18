@@ -1,8 +1,10 @@
 name: Docker Image CI
 
-# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#using-multiple-events
 on: 
   push:
+    branches:
+      - main
+      - master
   pull_request:
     branches:
       - main
