@@ -1,7 +1,9 @@
 name: Docker Image CI
 
-on: [push, pull_request] ## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#using-multiple-events
-  branches: [ main ]
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#using-multiple-events
+on: [push, pull_request] 
+  branches: 
+    - main 
 
 jobs:
 
