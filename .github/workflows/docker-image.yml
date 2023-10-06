@@ -1,6 +1,6 @@
 name: Docker Image CI
 
-on: 
+on:
   push:
     branches:
       - main
@@ -10,26 +10,23 @@ on:
       - main
       - master
 
-
 jobs:
-
-
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis      
-      
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
       # https://github.com/marketplace/actions/sonarcloud-scan
       # https://github.com/marketplace/actions/official-sonarqube-scan
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
+
       # Check the Quality Gate status.
       # https://github.com/marketplace/actions/sonarqube-quality-gate-check
       - name: SonarQube Quality Gate check
@@ -41,36 +38,44 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           #SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
 
-
   build-image:
     name: builds docker image & push
     needs: sonarcloud
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: docker/setup-buildx-action@v2
-    - uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}    
-    - name: set lower case owner name
-      run: |
-        echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
-      env:
-        OWNER: '${{ github.repository_owner }}'
-    - uses: docker/build-push-action@v4
-      with:
-        push: true
-        file: ./py-alpine/3.9-alpine/Dockerfile
-        tags: |
-          ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:latest
-          ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:${{ github.run_number }}
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGENAME }}:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGENAME }}:${{ github.run_number }}
+      - uses: actions/checkout@v4.1.0
+      - uses: docker/setup-buildx-action@v3.0.0
+      - uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: docker/login-action@v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+        env:
+          OWNER: "${{ github.repository_owner }}"
 
+      - name: Build and push Docker images 3.10
+        uses: docker/build-push-action@v5.0.0
+        with:
+          push: true
+          file: ./py-alpine/3.10-alpine/Dockerfile
+          tags: |
+            ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:3.10-alpine
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGENAME }}:3.10-alpine
+      - name: Build and push Docker images 3.11
+        uses: docker/build-push-action@v5.0.0
+        with:
+          push: true
+          file: ./py-alpine/3.11-alpine/Dockerfile
+          tags: |
+            ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:latest
+            ghcr.io/${{ env.OWNER_LC }}/${{ vars.IMAGENAME }}:3.11-alpine
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGENAME }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGENAME }}:3.11-alpine
