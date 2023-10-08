@@ -16,7 +16,7 @@ Python image with Chromium and Chromium Chromedriver to be used with Selenium (S
 
 ### Python 3 (Alpine-based)
 
-- `3.9-alpine` (based on python:3.9-alpine, [Dockerfile](https://github.com/moisesJurad0/docker-python-chromium/blob/main/py-alpine/3.9-alpine/Dockerfile))
+- `3.11-alpine` (based on python:3.11-alpine, [Dockerfile](https://github.com/moisesjurad0/docker-python-chromium))
 
 ## Usage
 
