@@ -3,7 +3,7 @@ FROM python:3.11-alpine
 # install chromium & chromium-chromedriver
 # ChromeDriver 110.0.5481.177 (f34f7ab2d4ca4ad498ef42aeba4f4eb2c1392d63-refs/branch-heads/5481@{#1239})
 # Chromium 110.0.5481.177
-RUN apk update && apk add chromium chromium-chromedriver
+RUN apk update && apk add --no-cache chromium chromium-chromedriver
 
 # inherit this image on your own image 
 # FROM squartle:python-chromium
